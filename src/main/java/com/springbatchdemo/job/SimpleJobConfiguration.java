@@ -5,9 +5,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
+import org.springframework.batch.core.configuration.annotation.JobScope;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -37,12 +39,14 @@ public class SimpleJobConfiguration {
         // simpleJob 이라는 이름의 Batch Job 을 생성
         // job 의 이름은 별도로 지정하지 않고, Builder 를 통해 지정
         return jobBuilderFactory.get("simpleJob")
-                .start(simpleStep1())
+                .start(simpleStep1(null))
+                .next(simpleStep2(null))
                 .build();
     }
 
     @Bean
-    public Step simpleStep1() {
+    @JobScope
+    public Step simpleStep1(@Value("#{jobParameters[requestDate]}") String requestDate) {
         // simpleStep1 이라는 이름의 Batch Job 을 생성
         // jobBuilderFactory.get("simpleJob") 와 마찬가지로 Builder 를 통해 이름 지정
         return stepBuilderFactory.get("simpleStep1")
@@ -50,7 +54,25 @@ public class SimpleJobConfiguration {
                 // Tasklet 은 'Step 안에서 단일로 수행될 커스텀한 기능'들을 선언할때 사용됨
                 // Batch가 수행되면 log.info 가 출력됨됨
                .tasklet((contribution, chunkContext) -> {
-                    log.info(">>>>>>>>>>>>>>>> This is Step1");
+                   log.info(">>>>> This is Step1");
+                   log.info(">>>>> requestDate = {}", requestDate);
+                   return RepeatStatus.FINISHED;
+                })
+                .build();
+    }
+
+    @Bean
+    @JobScope
+    public Step simpleStep2(@Value("#{jobParameters[requestDate]}") String requestDate) {
+        // simpleStep1 이라는 이름의 Batch Job 을 생성
+        // jobBuilderFactory.get("simpleJob") 와 마찬가지로 Builder 를 통해 이름 지정
+        return stepBuilderFactory.get("simpleStep2")
+                // Step 안에서 수행될 기능을 명시
+                // Tasklet 은 'Step 안에서 단일로 수행될 커스텀한 기능'들을 선언할때 사용됨
+                // Batch가 수행되면 log.info 가 출력됨됨
+                .tasklet((contribution, chunkContext) -> {
+                    log.info(">>>>> This is Step2");
+                    log.info(">>>>> requestDate = {}", requestDate);
                     return RepeatStatus.FINISHED;
                 })
                 .build();

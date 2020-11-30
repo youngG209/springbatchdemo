@@ -1,17 +1,26 @@
-#spring:
-#  profiles:
-#    active: local
-#
-#---
-#spring:
-#  profiles: local
-#  datasource:
-#    hikari:
-#      jdbc-url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-#      username: sa
-#      password:
-#      driver-class-name: org.h2.Driver
-#---
+logging.level.org.hibernate.SQL: debug            # 로그 형식으로 쿼리 보여주기
+spring.jpa.properties.hibernate.format_sql: true  # 압축된 쿼리를 읽기 좋게 포멧
+
+---
+
+spring:
+  profiles:
+    active: local
+
+  batch:
+    job:
+      names: ${job.name:NONE}
+
+---
+spring:
+  profiles: local
+  datasource:
+    hikari:
+      jdbc-url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+      username: sa
+      password:
+      driver-class-name: org.h2.Driver
+---
 spring:
   profiles: mysql
   datasource:

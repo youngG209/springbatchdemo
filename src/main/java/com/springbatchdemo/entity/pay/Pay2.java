@@ -1,10 +1,5 @@
 package com.springbatchdemo.entity.pay;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,9 +8,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Entity
-public class Pay {
+public class Pay2 {
 
-    public Pay() {
+    public Pay2() {
 
     }
 
@@ -73,19 +68,19 @@ public class Pay {
                 '}';
     }
 
-    public Pay(Long amount, String txName, String txDateTime) {
+    public Pay2(Long amount, String txName, String txDateTime) {
         this.amount = amount;
         this.txName = txName;
         this.txDateTime = LocalDateTime.parse(txDateTime, FORMATTER);
     }
 
-    public Pay(Long amount, String txName, LocalDateTime txDateTime) {
+    public Pay2(Long amount, String txName, LocalDateTime txDateTime) {
         this.amount = amount;
         this.txName = txName;
         this.txDateTime = txDateTime;
     }
 
-    public Pay(Long id, Long amount, String txName, String txDateTime) {
+    public Pay2(Long id, Long amount, String txName, String txDateTime) {
         this.id = id;
         this.amount = amount;
         this.txName = txName;

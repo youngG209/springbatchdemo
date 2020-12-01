@@ -12,9 +12,6 @@ import javax.persistence.Id;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-@ToString
-@Getter
-@Setter
 @Entity
 public class Pay {
 
@@ -33,6 +30,48 @@ public class Pay {
     private String txName;
 
     private LocalDateTime txDateTime;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Long amount) {
+        this.amount = amount;
+    }
+
+    public String getTxName() {
+        return txName;
+    }
+
+    public void setTxName(String txName) {
+        this.txName = txName;
+    }
+
+    public LocalDateTime getTxDateTime() {
+        return txDateTime;
+    }
+
+    public void setTxDateTime(LocalDateTime txDateTime) {
+        this.txDateTime = txDateTime;
+    }
+
+    @Override
+    public String toString() {
+        return "Pay{" +
+                "id=" + id +
+                ", amount=" + amount +
+                ", txName='" + txName + '\'' +
+                ", txDateTime=" + txDateTime +
+                '}';
+    }
 
     public Pay(Long amount, String txName, String txDateTime) {
         this.amount = amount;
